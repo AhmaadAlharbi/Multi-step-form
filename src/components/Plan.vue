@@ -4,7 +4,11 @@
     <p class="mb-10">You have the option of monthly or yearly billing.</p>
     <div class="grid grid-cols-3 gap-16">
       <!-- arcade col -->
-      <div class="px-10 py-5 border rounded-3xl space-y-5">
+      <div
+        class="px-10 py-5 border rounded-3xl space-y-5 plan-type cursor-pointer"
+        ref="arcade"
+        @click="changeBorder('arcade')"
+      >
         <img src="../assets/images/icon-arcade.svg" alt="" />
         <div>
           <h1>Arcade</h1>
@@ -12,7 +16,11 @@
         </div>
       </div>
       <!-- Advanced col -->
-      <div class="px-10 py-5 border rounded-3xl space-y-5">
+      <div
+        class="px-10 py-5 border rounded-3xl space-y-5 cursor-pointer"
+        ref="advanced"
+        @click="changeBorder('advanced')"
+      >
         <img src="../assets/images/icon-advanced.svg" alt="" />
         <div>
           <h1>Advanced</h1>
@@ -20,7 +28,11 @@
         </div>
       </div>
       <!-- Pro col -->
-      <div class="px-10 py-5 border rounded-3xl space-y-5">
+      <div
+        class="px-10 py-5 border rounded-3xl space-y-5 cursor-pointer"
+        ref="pro"
+        @click="changeBorder('pro')"
+      >
         <img src="../assets/images/icon-pro.svg" alt="" />
         <div>
           <h1>Pro</h1>
@@ -32,7 +44,7 @@
     <div class="mt-10 flex justify-center items-center space-x-10">
       <p>Monthly</p>
       <label class="switch">
-        <input type="checkbox" />
+        <input type="checkbox" v-model="subsicrption" />
         <span class="slider round"></span>
       </label>
       <p>Yearly</p>
@@ -46,7 +58,7 @@
         Go back
       </button>
 
-      <button type="submit" class="bg-indigo-900 text-white px-8 py-2">
+      <button @click="goToStep3" class="bg-indigo-900 text-white px-8 py-2">
         Next Step
       </button>
     </div>
@@ -54,7 +66,42 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      plan: [],
+      subsicrption: false,
+      selectedType: "arcade",
+    };
+  },
+  methods: {
+    changeBorder(value) {
+      switch (value) {
+        case "arcade":
+          this.$refs.arcade.classList.add("plan-type");
+          this.$refs.advanced.classList.remove("plan-type");
+          this.$refs.pro.classList.remove("plan-type");
+          break;
+        case "advanced":
+          this.$refs.arcade.classList.remove("plan-type");
+          this.$refs.pro.classList.remove("plan-type");
+          this.$refs.advanced.classList.add("plan-type");
+          break;
+        default:
+          this.$refs.arcade.classList.remove("plan-type");
+          this.$refs.advanced.classList.remove("plan-type");
+          this.$refs.pro.classList.add("plan-type");
+      }
+      this.selectedType = value;
+    },
+    goToStep3() {
+      this.$emit("step3");
+      let info = { type: this.selectedType, sub: this.subsicrption };
+      this.plan = this.plan.push(info);
+      this.$emit("info", info);
+    },
+  },
+};
 </script>
 
 <style>
@@ -114,5 +161,8 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+.plan-type {
+  border: 1px solid rgb(0, 76, 255);
 }
 </style>

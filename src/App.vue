@@ -1,15 +1,28 @@
 <template>
-  <div class="flex items-baseline mt-32 mx-auto bg-white w-1/2 rounded-3xl">
+  <div
+    class="
+      flex
+      items-baseline
+      mt-32
+      mx-auto
+      bg-white
+      w-1/2
+      h-[600px]
+      rounded-3xl
+    "
+  >
     <!-- navbar col -->
     <nav
       class="
         flex flex-col
         rounded-2xl
-        justify-start
-        space-y-8
+        space-y-6
+        pl-6
         text-white
         w-[274px]
         h-[568px]
+        mx-4
+        my-3
       "
     >
       <!-- step one -->
@@ -139,55 +152,80 @@
           plan = false;
           step--;
         "
+        @step3="
+          info = false;
+          plan = false;
+          addons = true;
+          step++;
+        "
+        @info="handleInfo"
       />
+    </div>
+    <!-- add-ons component -->
+    <div v-if="addons">
+      <Add_ons
+        @goToStep2="
+          step--;
+          addons = false;
+          plan = true;
+        "
+        @step4="
+          addons = false;
+          summary = true;
+          step++;
+        "
+        :information="information"
+      />
+    </div>
+    <!-- Summary component -->
+    <div v-if="summary">
+      <Summary
+        @goToStep3="
+          addons = true;
+          summary = false;
+          step--;
+        "
+        @step5="(summary = false), (thankyou = true)"
+      />
+    </div>
+    <!-- thnakyou component -->
+    <div v-if="thankyou">
+      <Thankyou />
     </div>
   </div>
 </template>
 
 <script>
 import Plan from "./components/Plan.vue";
+import Add_ons from "./components/Add_ons.vue";
+import Summary from "./components/Summary.vue";
+import Thankyou from "./components/Thankyou.vue";
 export default {
-  components: { Plan },
+  components: { Plan, Add_ons, Summary, Thankyou },
   data() {
     return {
       info: true,
       plan: false,
+      addons: false,
+      summary: false,
+      thankyou: false,
       name: "",
       email: "",
       phone: "",
       step: 1,
+      information: {},
     };
   },
   methods: {
     goToStep2() {
-      // this.$refs.name.classList.remove("error");
-      // this.$refs.email.classList.remove("error");
-      // this.$refs.phone.classList.remove("error");
-      function showRedBorder(input, errMessage) {
-        input.classList.add("error");
-        errMessage.classList.remove("hidden");
-        errMessage.classList.add("flex");
-      }
-      function removeRedBorder(input, errMessage) {
-        input.classList.remove("error");
-        errMessage.classList.add("hidden");
-        errMessage.classList.remove("flex");
-      }
-
       if (this.name === "") {
         showRedBorder(this.$refs.name, this.$refs.error_name);
       } else if (this.email === "") {
-        removeRedBorder(this.$refs.name, this.$refs.error_name);
+        removeRedBorder(this.$refs.name, this.$refs.error_name); //to hide error message from name feild when its valid
         showRedBorder(this.$refs.email, this.$refs.error_email);
-        // this.$refs.error_name.classList.add("hidden");
-        // this.$refs.email.classList.add("error");
-        // this.$refs.error_email.classList.remove("hidden");
-        // this.$refs.error_email.classList.add("flex");
       } else {
-        this.$refs.error_email.classList.add("hidden");
-        this.$refs.phone.classList.add("error");
-        this.$refs.error_phone.classList.remove("hidden");
-        this.$refs.error_phone.classList.add("flex");
+        removeRedBorder(this.$refs.email, this.$refs.error_email); //to hide error message from email feild when its valid
+        showRedBorder(this.$refs.phone, this.$refs.error_phone);
       }
 
       if (this.name !== "" && this.email !== "" && this.phone !== "") {
@@ -195,17 +233,25 @@ export default {
         this.info = !this.info;
         this.plan = !this.plan;
       }
-      // this.name === ""
-      //   ? this.$refs.name.classList.add("error")
-      //   : this.$refs.name.classList.remove("error");
-      // this.email === ""
-      //   ? this.$refs.email.classList.add("error")
-      //   : this.$refs.email.classList.remove("error");
-      // this.phone === ""
-      //   ? this.$refs.phone.classList.add("error")
-      //   : this.$refs.phone.classList.remove("error");
+      //to show error message
+      function showRedBorder(input, errMessage) {
+        input.classList.add("error");
+        errMessage.classList.remove("hidden");
+        errMessage.classList.add("flex");
+      }
+      //to hide error message
+
+      function removeRedBorder(input, errMessage) {
+        input.classList.remove("error");
+        errMessage.classList.add("hidden");
+        errMessage.classList.remove("flex");
+      }
+    },
+    handleInfo(value) {
+      this.information = value;
     },
   },
+  updated() {},
 };
 </script>
 
