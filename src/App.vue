@@ -158,7 +158,7 @@
           addons = true;
           step++;
         "
-        @info="handleInfo"
+        @plan="handlePlan"
       />
     </div>
     <!-- add-ons component -->
@@ -174,6 +174,7 @@
           summary = true;
           step++;
         "
+        @info2="handleInfo2"
         :information="information"
       />
     </div>
@@ -185,6 +186,8 @@
           summary = false;
           step--;
         "
+        :typeOfPlan="typeOfPlan"
+        :sub="sub"
         @step5="(summary = false), (thankyou = true)"
       />
     </div>
@@ -213,7 +216,8 @@ export default {
       email: "",
       phone: "",
       step: 1,
-      information: {},
+      typeOfPlan: "",
+      sub: "",
     };
   },
   methods: {
@@ -247,7 +251,11 @@ export default {
         errMessage.classList.remove("flex");
       }
     },
-    handleInfo(value) {
+    handlePlan(value, value2) {
+      this.typeOfPlan = value;
+      this.sub = value2;
+    },
+    handleInfo2(value) {
       this.information = value;
     },
   },

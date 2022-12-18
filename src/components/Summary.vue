@@ -1,4 +1,5 @@
 <template>
+  {{ information }}
   <div class="px-20">
     <h1 class="text-4xl mb-2">Finishing up</h1>
     <p class="mb-10">Double-check everything looks OK before confirming.</p>
@@ -41,7 +42,9 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: ["information"],
+};
 </script>
 
 <style>

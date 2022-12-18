@@ -1,5 +1,5 @@
 <template>
-  {{ information }}
+  {{ services }}
   <div class="px-20">
     <h1 class="text-4xl mb-2">Pick add-ons</h1>
     <p class="mb-10">Add-ons help enhance your gaming experience.</p>
@@ -93,7 +93,7 @@ export default {
       onlineCheck: true,
       storageCheck: false,
       profileCheck: false,
-      services: [],
+      services: ["Online Services"],
     };
   },
   methods: {
@@ -101,25 +101,32 @@ export default {
       switch (value) {
         case "online":
           this.$refs.online.classList.toggle("plan-type");
-
           this.onlineCheck = !this.onlineCheck;
+          if (!this.services.includes("Online Services")) {
+            this.services.push("Online Services");
+
+            if (this.$refs.online.classList.contains(plan - type)) {
+            }
+          }
           break;
         case "storage":
           this.$refs.storage.classList.toggle("plan-type");
           this.storageCheck = !this.storageCheck;
-
+          if (!this.services.includes("Larger storage")) {
+            this.services.push("Larger storage");
+          }
           break;
         default:
           this.$refs.profile.classList.toggle("plan-type");
 
           this.profileCheck = !this.profileCheck;
+          if (!this.services.includes("Customizable profile")) {
+            this.services.push("Customizable profile");
+          }
       }
     },
     goToStep4() {
       this.$emit("step4");
-      let info = { type: this.selectedType, sub: this.subsicrption };
-      this.plan = this.plan.push(info);
-      this.$emit("info", info);
     },
   },
 };

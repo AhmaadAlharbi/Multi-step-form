@@ -69,11 +69,17 @@
 export default {
   data() {
     return {
-      plan: [],
+      typeOfPlan: "arcade",
+      sub: "Monthly",
       subsicrption: false,
-      selectedType: "arcade",
     };
   },
+  watch: {
+    subsicrption(value) {
+      value === true ? (this.sub = "Yearly") : (this.sub = "Monthly");
+    },
+  },
+
   methods: {
     changeBorder(value) {
       switch (value) {
@@ -81,24 +87,25 @@ export default {
           this.$refs.arcade.classList.add("plan-type");
           this.$refs.advanced.classList.remove("plan-type");
           this.$refs.pro.classList.remove("plan-type");
+          this.typeOfPlan = value;
           break;
         case "advanced":
           this.$refs.arcade.classList.remove("plan-type");
           this.$refs.pro.classList.remove("plan-type");
           this.$refs.advanced.classList.add("plan-type");
+          this.typeOfPlan = value;
           break;
         default:
           this.$refs.arcade.classList.remove("plan-type");
           this.$refs.advanced.classList.remove("plan-type");
           this.$refs.pro.classList.add("plan-type");
+          this.typeOfPlan = value;
       }
       this.selectedType = value;
     },
     goToStep3() {
       this.$emit("step3");
-      let info = { type: this.selectedType, sub: this.subsicrption };
-      this.plan = this.plan.push(info);
-      this.$emit("info", info);
+      this.$emit("plan", this.typeOfPlan, this.sub);
     },
   },
 };
