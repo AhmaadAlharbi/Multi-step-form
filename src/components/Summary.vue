@@ -1,5 +1,5 @@
 <template>
-  {{ information }}
+  {{ services }}
   <div class="px-20">
     <h1 class="text-4xl mb-2">Finishing up</h1>
     <p class="mb-10">Double-check everything looks OK before confirming.</p>
@@ -10,14 +10,13 @@
         <h5 class="underline">Change</h5>
         <p class="text-blue-900 font-bold">$9/mo</p>
       </div>
-      <div class="flex justify-between text-gray-400 mt-4">
-        <h5 class="underline">Online Service</h5>
-        <p class="text-blue-500 font-bold">+$1/mo</p>
+      <div v-for="service in services" :key="service">
+        <div class="flex justify-between text-gray-400 mt-4">
+          <h5 class="underline">{{ service }}</h5>
+          <p class="text-blue-500 font-bold">+$1/mo</p>
+        </div>
       </div>
-      <div class="flex justify-between text-gray-400 mt-4">
-        <h5 class="underline">Large Storage</h5>
-        <p class="text-blue-500 font-bold">+$2/mo</p>
-      </div>
+
       <div class="flex justify-between text-gray-400 mt-8">
         <h5 class="underline">Total (Per Month)</h5>
         <p class="text-blue-900 font-bold">+$12/mo</p>
@@ -43,7 +42,12 @@
 </template>
 <script>
 export default {
-  props: ["information"],
+  props: ["services"],
+  data() {
+    return {
+      price: 0,
+    };
+  },
 };
 </script>
 

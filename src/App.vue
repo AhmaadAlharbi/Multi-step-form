@@ -174,8 +174,8 @@
           summary = true;
           step++;
         "
+        @service-array="handleServiceArray"
         @info2="handleInfo2"
-        :information="information"
       />
     </div>
     <!-- Summary component -->
@@ -187,6 +187,7 @@
           step--;
         "
         :typeOfPlan="typeOfPlan"
+        :services="services"
         :sub="sub"
         @step5="(summary = false), (thankyou = true)"
       />
@@ -218,6 +219,7 @@ export default {
       step: 1,
       typeOfPlan: "",
       sub: "",
+      services: [],
     };
   },
   methods: {
@@ -257,6 +259,9 @@ export default {
     },
     handleInfo2(value) {
       this.information = value;
+    },
+    handleServiceArray(value) {
+      this.services = value;
     },
   },
   updated() {},
