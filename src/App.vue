@@ -2,31 +2,19 @@
   <div
     class="
       flex
-      items-baseline
+      items-stretch
       mt-32
       mx-auto
       bg-white
-      w-1/2
-      h-[600px]
+      max-w-4xl
       rounded-3xl
+      py-10
     "
   >
     <!-- navbar col -->
-    <nav
-      class="
-        flex flex-col
-        rounded-2xl
-        space-y-6
-        pl-6
-        text-white
-        w-[274px]
-        h-[568px]
-        mx-4
-        my-3
-      "
-    >
+    <nav class="rounded-xl text-white ml-10 px-5 py-32 space-y-6">
       <!-- step one -->
-      <div class="flex items-center space-x-6 mt-20">
+      <div class="flex items-center space-x-6">
         <div
           class="circle border rounded-full px-4 py-2 mx-3"
           :class="{ 'bg-sky-300': step == 1 }"
@@ -79,7 +67,7 @@
       </div>
     </nav>
     <!-- info col -->
-    <div v-if="info">
+    <div v-if="info" class="flex-1">
       <div class="px-20">
         <h1 class="text-4xl mb-2">Personal info</h1>
         <p class="mb-10">
