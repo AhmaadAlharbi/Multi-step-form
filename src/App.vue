@@ -1,4 +1,5 @@
 <template>
+  {{ planPrice }}
   <div
     class="
       flex
@@ -174,6 +175,7 @@
           summary = true;
           step++;
         "
+        :sub="sub"
         @service-array="handleServiceArray"
         @info2="handleInfo2"
       />
@@ -186,6 +188,7 @@
           summary = false;
           step--;
         "
+        :planPrice="planPrice"
         :typeOfPlan="typeOfPlan"
         :services="services"
         :sub="sub"
@@ -219,6 +222,7 @@ export default {
       step: 1,
       typeOfPlan: "",
       sub: "",
+      planPrice: null,
       services: [],
     };
   },
@@ -253,9 +257,11 @@ export default {
         errMessage.classList.remove("flex");
       }
     },
-    handlePlan(value, value2) {
+    handlePlan(value, value2, value3) {
       this.typeOfPlan = value;
       this.sub = value2;
+      this.planPrice = value3;
+      alert(value3);
     },
     handleInfo2(value) {
       this.information = value;

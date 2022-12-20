@@ -1,5 +1,4 @@
 <template>
-  {{ services }}
   <div class="px-20">
     <h1 class="text-4xl mb-2">Finishing up</h1>
     <p class="mb-10">Double-check everything looks OK before confirming.</p>
@@ -8,18 +7,18 @@
       <h1 class="text-2xl">Arcade (Monthly)</h1>
       <div class="flex justify-between text-gray-400 mt-2 border-b pb-4">
         <h5 class="underline">Change</h5>
-        <p class="text-blue-900 font-bold">$9/mo</p>
+        <p class="text-blue-900 font-bold">${{ planPrice }}/mo</p>
       </div>
       <div v-for="service in services" :key="service">
         <div class="flex justify-between text-gray-400 mt-4">
-          <h5 class="underline">{{ service }}</h5>
-          <p class="text-blue-500 font-bold">+$1/mo</p>
+          <h5 class="underline">{{ service.type }}</h5>
+          <p class="text-blue-500 font-bold">${{ service.price }}/mo</p>
         </div>
       </div>
 
       <div class="flex justify-between text-gray-400 mt-8">
         <h5 class="underline">Total (Per Month)</h5>
-        <p class="text-blue-900 font-bold">+$12/mo</p>
+        <p class="text-blue-900 font-bold">+${{ total }}/mo</p>
       </div>
     </div>
     <!-- buttons -->
@@ -42,11 +41,20 @@
 </template>
 <script>
 export default {
-  props: ["services"],
+  props: ["services", "planPrice"],
   data() {
     return {
       price: 0,
     };
+  },
+  computed: {
+    total() {
+      let result;
+      return (result = this.services.reduce((acc, curr) => {
+        acc += curr.price;
+        return acc + this.planPrice;
+      }, 0));
+    },
   },
 };
 </script>

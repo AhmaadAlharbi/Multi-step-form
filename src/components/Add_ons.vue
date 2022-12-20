@@ -1,5 +1,7 @@
 <template>
   <div class="px-20">
+    {{ servicesTrue }}
+    {{ sub }}
     <h1 class="text-4xl mb-2">Pick add-ons</h1>
     <p class="mb-10">Add-ons help enhance your gaming experience.</p>
     <div class="flex flex-col justify-center items-center">
@@ -22,7 +24,8 @@
           <h3>Online Services</h3>
           <p>Access to multiplayer games</p>
         </div>
-        <p class="text-gray-400">+$1/mo</p>
+        <p v-if="sub === 'Monthly'" class="text-gray-400">+$1/mo</p>
+        <p v-else class="text-gray-400">+$10/mo</p>
       </div>
       <div
         class="
@@ -44,7 +47,8 @@
           <h3>Larger storage</h3>
           <p>Extra 1TB of cloud save</p>
         </div>
-        <p class="text-gray-400">+$2/mo</p>
+        <p v-if="sub === 'Monthly'" class="text-gray-400">+$2/mo</p>
+        <p v-else class="text-gray-400">+$20/mo</p>
       </div>
       <div
         class="
@@ -65,7 +69,8 @@
           <h3>Customizable profile</h3>
           <p>Custom theme on your profile</p>
         </div>
-        <p class="text-gray-400">+$2/mo</p>
+        <p v-if="sub === 'Monthly'" class="text-gray-400">+$2/mo</p>
+        <p v-else class="text-gray-400">+$20/mo</p>
       </div>
     </div>
     <!-- buttons -->
@@ -86,12 +91,13 @@
 
 <script>
 export default {
+  props: ["sub"],
   data() {
     return {
-      onlineCheck: true,
+      onlineCheck: false,
       storageCheck: false,
       profileCheck: false,
-      services: ["Online Services"],
+      services: [],
     };
   },
   methods: {
@@ -105,34 +111,59 @@ export default {
       };
 
       const toggle = (arr, item, getValue = (item) => item) => {
-        const index = arr.findIndex((i) => getValue(i) === getValue(item));
-        if (index === -1) return [...arr, item];
-        return removeAtIndex(arr, index);
+        if (arr.some((i) => getValue(i) === getValue(item)))
+          return arr.filter((i) => getValue(i) !== getValue(item));
+        else return [...arr, item];
       };
 
       switch (value) {
         case "online":
           this.$refs.online.classList.toggle("plan-type");
           this.onlineCheck = !this.onlineCheck;
-          this.services = toggle(this.services, "Online Services");
+          var service = {
+            id: 1,
+            type: "online services",
+            price: 1,
+            status: true,
+          };
+          this.services = toggle(this.services, service, (item) => item.id);
+          // this.services.push(service);
 
           break;
         case "storage":
           this.$refs.storage.classList.toggle("plan-type");
           this.storageCheck = !this.storageCheck;
-          this.services = toggle(this.services, "Large Storage");
+          // this.services = toggle(this.services, "Large Storage");
+          var service = {
+            id: 2,
+            type: "Large Storage",
+            price: 2,
+            status: true,
+          };
+          this.services = toggle(this.services, service, (item) => item.id);
 
           break;
         default:
           this.$refs.profile.classList.toggle("plan-type");
 
           this.profileCheck = !this.profileCheck;
-          this.services = toggle(this.services, "Customizable profile");
+          var service = {
+            id: 3,
+            type: "Customizable profile",
+            price: 2,
+            status: true,
+          };
+          this.services = toggle(this.services, service, (item) => item.id);
       }
     },
     goToStep4() {
       this.$emit("step4");
       this.$emit("service-array", this.services);
+    },
+  },
+  computed: {
+    servicesTrue() {
+      return this.services.filter((el) => el.status === true);
     },
   },
 };

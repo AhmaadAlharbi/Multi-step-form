@@ -1,4 +1,5 @@
 <template>
+  {{ planPrice2 }}
   <div class="px-20">
     <h1 class="text-4xl mb-2">Select your plan</h1>
     <p class="mb-10">You have the option of monthly or yearly billing.</p>
@@ -12,7 +13,11 @@
         <img src="../assets/images/icon-arcade.svg" alt="" />
         <div>
           <h1>Arcade</h1>
-          <p>$9/Mo</p>
+          <p v-if="!subsicrption">$9/Mo</p>
+          <div v-else>
+            <p>$90/Year</p>
+            <p>2 months free</p>
+          </div>
         </div>
       </div>
       <!-- Advanced col -->
@@ -24,7 +29,11 @@
         <img src="../assets/images/icon-advanced.svg" alt="" />
         <div>
           <h1>Advanced</h1>
-          <p>$12/Mo</p>
+          <p v-if="!subsicrption">$12/Mo</p>
+          <div v-else>
+            <p>$120/Year</p>
+            <p>2 months free</p>
+          </div>
         </div>
       </div>
       <!-- Pro col -->
@@ -36,7 +45,11 @@
         <img src="../assets/images/icon-pro.svg" alt="" />
         <div>
           <h1>Pro</h1>
-          <p>$15/Mo</p>
+          <p v-if="!subsicrption">$15/Mo</p>
+          <div v-else>
+            <p>$150/Year</p>
+            <p>2 months free</p>
+          </div>
         </div>
       </div>
     </div>
@@ -70,6 +83,7 @@ export default {
   data() {
     return {
       typeOfPlan: "arcade",
+      planPrice: 9,
       sub: "Monthly",
       subsicrption: false,
     };
@@ -77,6 +91,13 @@ export default {
   watch: {
     subsicrption(value) {
       value === true ? (this.sub = "Yearly") : (this.sub = "Monthly");
+    },
+  },
+  computed: {
+    planPrice2() {
+      return this.subsicrption === true
+        ? (this.planPrice = 90)
+        : (this.planPrice = 9);
     },
   },
 
@@ -88,24 +109,27 @@ export default {
           this.$refs.advanced.classList.remove("plan-type");
           this.$refs.pro.classList.remove("plan-type");
           this.typeOfPlan = value;
+          this.planPrice = this.subsicrption ? 90 : 9;
           break;
         case "advanced":
           this.$refs.arcade.classList.remove("plan-type");
           this.$refs.pro.classList.remove("plan-type");
           this.$refs.advanced.classList.add("plan-type");
           this.typeOfPlan = value;
+          this.planPrice = this.subsicrption === true ? 120 : 12;
           break;
         default:
           this.$refs.arcade.classList.remove("plan-type");
           this.$refs.advanced.classList.remove("plan-type");
           this.$refs.pro.classList.add("plan-type");
           this.typeOfPlan = value;
+          this.planPrice = this.subsicrption === true ? 150 : 15;
       }
       this.selectedType = value;
     },
     goToStep3() {
       this.$emit("step3");
-      this.$emit("plan", this.typeOfPlan, this.sub);
+      this.$emit("plan", this.typeOfPlan, this.sub, this.planPrice);
     },
   },
 };
