@@ -1,7 +1,5 @@
 <template>
   <div class="px-20">
-    {{ servicesTrue }}
-    {{ sub }}
     <h1 class="text-4xl mb-2">Pick add-ons</h1>
     <p class="mb-10">Add-ons help enhance your gaming experience.</p>
     <div class="flex flex-col justify-center items-center">
@@ -98,6 +96,8 @@ export default {
       storageCheck: false,
       profileCheck: false,
       services: [],
+      onlinePrice: 1,
+      storagePrice: 2,
     };
   },
   methods: {
@@ -120,10 +120,13 @@ export default {
         case "online":
           this.$refs.online.classList.toggle("plan-type");
           this.onlineCheck = !this.onlineCheck;
+          this.sub === "Monthly"
+            ? (this.onlinePrice = 1)
+            : (this.onlinePrice = 10);
           var service = {
             id: 1,
             type: "online services",
-            price: 1,
+            price: this.onlinePrice,
             status: true,
           };
           this.services = toggle(this.services, service, (item) => item.id);
@@ -134,10 +137,13 @@ export default {
           this.$refs.storage.classList.toggle("plan-type");
           this.storageCheck = !this.storageCheck;
           // this.services = toggle(this.services, "Large Storage");
+          this.sub === "Monthly"
+            ? (this.storagePrice = 2)
+            : (this.storagePrice = 20);
           var service = {
             id: 2,
             type: "Large Storage",
-            price: 2,
+            price: this.storagePrice,
             status: true,
           };
           this.services = toggle(this.services, service, (item) => item.id);
@@ -147,10 +153,13 @@ export default {
           this.$refs.profile.classList.toggle("plan-type");
 
           this.profileCheck = !this.profileCheck;
+          this.sub === "Monthly"
+            ? (this.storagePrice = 2)
+            : (this.storagePrice = 20);
           var service = {
             id: 3,
             type: "Customizable profile",
-            price: 2,
+            price: this.storagePrice,
             status: true,
           };
           this.services = toggle(this.services, service, (item) => item.id);

@@ -4,7 +4,7 @@
     <p class="mb-10">Double-check everything looks OK before confirming.</p>
 
     <div>
-      <h1 class="text-2xl">Arcade (Monthly)</h1>
+      <h1 class="text-2xl capitalize">{{ typeOfPlan }} ({{ sub }})</h1>
       <div class="flex justify-between text-gray-400 mt-2 border-b pb-4">
         <h5 class="underline">Change</h5>
         <p class="text-blue-900 font-bold">${{ planPrice }}/mo</p>
@@ -41,7 +41,7 @@
 </template>
 <script>
 export default {
-  props: ["services", "planPrice"],
+  props: ["services", "planPrice", "typeOfPlan", "sub"],
   data() {
     return {
       price: 0,
@@ -49,11 +49,11 @@ export default {
   },
   computed: {
     total() {
-      let result;
-      return (result = this.services.reduce((acc, curr) => {
+      const result = this.services.reduce((acc, curr) => {
         acc += curr.price;
-        return acc + this.planPrice;
-      }, 0));
+        return acc;
+      }, 0);
+      return result + this.planPrice;
     },
   },
 };

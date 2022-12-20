@@ -1,5 +1,4 @@
 <template>
-  {{ planPrice }}
   <div
     class="
       flex
@@ -261,7 +260,6 @@ export default {
       this.typeOfPlan = value;
       this.sub = value2;
       this.planPrice = value3;
-      alert(value3);
     },
     handleInfo2(value) {
       this.information = value;
